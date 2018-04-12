@@ -4,7 +4,6 @@ import org.apache.spark.api.java.JavaSparkContext;
 import scala.Tuple2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,19 +16,23 @@ public class AntTSP {
     public static void main(String[] args){
         SparkConf conf = new SparkConf().setMaster("local").setAppName("Ant TSP");
         JavaSparkContext context = new JavaSparkContext(conf);
+        long startTime;
+        long endTime;
         int numInstances = args.length == 2? Integer.parseInt(args[1]) : 30;
 
-        readGraph(context, "/home/colntrev/IdeaProjects/AntTSP/src/main/java/tspadata1.txt");
+        readGraph(context, "/Users/ColnTrev1/IdeaProjects/AntTSP/src/main/java/tspadata1.txt");
         init(numInstances);
 
         JavaRDD<AntTSPInstance> antTsp = context.parallelize(instances);
-        JavaRDD<Tuple2<Double, List<Integer>>> bestTours = antTsp.map(ant-> ant.solve(graph));
+        startTime = System.currentTimeMillis();
+        JavaRDD<Tuple2<Double, List<Integer>>> bestTours = antTsp.map(ant -> ant.solve(graph));
 
         List<Tuple2<Double, List<Integer>>> results = bestTours.collect();
 
         findBest(results);
-
+        endTime = System.currentTimeMillis();
         context.close();
+        System.out.println("Elapsed Time: " + (endTime - startTime));
     }
 
     public static void readGraph(JavaSparkContext context, String path){
@@ -88,6 +91,6 @@ public class AntTSP {
 
         }
 
-        System.out.println("Best Tour: " + tour + " " + "Length: " + best.toString());
+        //System.out.println("Best Tour: " + tour + " " + "Length: " + best.toString());
     }
 }
