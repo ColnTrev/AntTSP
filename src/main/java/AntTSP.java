@@ -20,7 +20,7 @@ public class AntTSP {
         long endTime;
         int numInstances = args.length == 2? Integer.parseInt(args[1]) : 30;
 
-        readGraph(context, "/Users/ColnTrev1/IdeaProjects/AntTSP/src/main/java/tspadata1.txt");
+        readGraph(context, "/Users/ColnTrev1/IdeaProjects/AntTSP/src/main/java/tspadata2.txt");
         init(numInstances);
 
         JavaRDD<AntTSPInstance> antTsp = context.parallelize(instances);
