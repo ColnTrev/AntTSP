@@ -137,29 +137,31 @@ public class AntTSPInstance implements Serializable{
         return Double.longBitsToDouble(((long) y) << 32);
     }
 
-    private int selectNextTown(Ant ant,double[][]graph){
-        if(rand.nextDouble() < pr){
-            int t = rand.nextInt(towns - currentIndex);
+    private int selectNextTown(Ant ant, double[][] graph) {
+        // sometimes just randomly select
+        if (rand.nextDouble() < pr) {
+            int t = rand.nextInt(towns - currentIndex); // random town
             int j = -1;
-            for(int i = 0; i < towns; i++){
-                if(!ant.visited(i)){
+            for (int i = 0; i < towns; i++) {
+                if (!ant.visited(i))
                     j++;
-                }
-                if(j == t){
+                if (j == t)
                     return i;
-                }
             }
+
         }
+        // calculate probabilities for each town (stored in probs)
         probTo(ant,graph);
+        // randomly select according to probs
         double r = rand.nextDouble();
-        double total = 0.0;
-        for(int i = 0; i < towns; i++){
-            total += probs[i];
-            if(total >= r){
+        double tot = 0;
+        for (int i = 0; i < towns; i++) {
+            tot += probs[i];
+            if (tot >= r)
                 return i;
-            }
         }
-        return 0; // should never get here
+
+        throw new RuntimeException("Not supposed to get here.");
     }
     private void probTo(Ant ant,double[][]graph){
         int i = ant.tour[currentIndex];

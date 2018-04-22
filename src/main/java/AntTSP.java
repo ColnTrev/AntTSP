@@ -17,9 +17,13 @@ public class AntTSP {
     public static void main(String[] args){
         SparkConf conf = new SparkConf().setMaster("local").setAppName("Ant TSP");
         JavaSparkContext context = new JavaSparkContext(conf);
+        if(args.length < 1){
+            System.out.println("OOPS");
+        }
+        String inputFile = args[0];
         int numInstances = args.length == 2? Integer.parseInt(args[1]) : 30;
 
-        readGraph(context, "/home/colntrev/IdeaProjects/AntTSP/src/main/java/tspadata1.txt");
+        readGraph(context, inputFile);
         init(numInstances);
 
         JavaRDD<AntTSPInstance> antTsp = context.parallelize(instances);
