@@ -22,7 +22,7 @@ public class AntTSP {
         }
         String inputFile = args[0];
         int numInstances = args.length == 2? Integer.parseInt(args[1]) : 30;
-
+        long startTime = System.currentTimeMillis();
         readGraph(context, inputFile);
         init(numInstances);
 
@@ -32,8 +32,9 @@ public class AntTSP {
         List<Tuple2<Double, List<Integer>>> results = bestTours.collect();
 
         findBest(results);
-
+        long endTime = System.currentTimeMillis();
         context.close();
+        System.out.println("Elapsed Time: " + (endTime - startTime));
     }
 
     public static void readGraph(JavaSparkContext context, String path){
