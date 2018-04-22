@@ -160,7 +160,12 @@ public class AntTSPInstance implements Serializable{
             if (tot >= r)
                 return i;
         }
-
+        // if both conditions fail select next town that is not visited
+        for(int i = 0; i < towns; i++){
+            if(!ant.visited(i)){
+                return i;
+            }
+        }
         throw new RuntimeException("Not supposed to get here.");
     }
     private void probTo(Ant ant,double[][]graph){
